@@ -1,5 +1,18 @@
+Download zones from NWS
 https://www.weather.gov/gis/publiczones
 
+
+Install libarary
+apt-get install gdal-bin
+
+Convert shapes to GeoJSON
+ogr2ogr -f GeoJSON -t_srs WGS84 data.json data.shp
+
+Install Typescript
 npm install typescript @types/node --save-dev
+
+Compile
 npx tsc split-ugc-geojson.ts
+
+Split the one big GeoJSON file into files per state
 node split-ugc-geojson.js
