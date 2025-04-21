@@ -5,7 +5,7 @@ var path = require("path");
 // 👇 Path to your big GeoJSON file
 var inputFile = './z_18mr25.json';
 // 👇 Directory to store split files
-var outputDir = path.resolve(__dirname, 'output_states');
+var outputDir = path.resolve(__dirname, 'z_18mr25');
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
 }
@@ -31,7 +31,7 @@ for (var state in grouped) {
         features: grouped[state],
     };
     var outputPath = path.join(outputDir, "".concat(state, ".geojson"));
-    fs.writeFileSync(outputPath, JSON.stringify(featureCollection, null, 2));
+    fs.writeFileSync(outputPath, JSON.stringify(featureCollection));
     console.log("\u2705 Wrote ".concat(grouped[state].length, " features to ").concat(state, ".geojson"));
 }
 console.log("\uD83C\uDF89 Done! Files written to: ".concat(outputDir));

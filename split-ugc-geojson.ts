@@ -4,7 +4,7 @@ import * as path from 'path';
 // 👇 Path to your big GeoJSON file
 const inputFile = './z_18mr25.json';
 // 👇 Directory to store split files
-const outputDir = path.resolve(__dirname, 'output_states');
+const outputDir = path.resolve(__dirname, 'z_18mr25');
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
@@ -33,7 +33,7 @@ for (const state in grouped) {
     features: grouped[state],
   };
   const outputPath = path.join(outputDir, `${state}.geojson`);
-  fs.writeFileSync(outputPath, JSON.stringify(featureCollection, null, 2));
+  fs.writeFileSync(outputPath, JSON.stringify(featureCollection));
   console.log(`✅ Wrote ${grouped[state].length} features to ${state}.geojson`);
 }
 
