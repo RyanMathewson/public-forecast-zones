@@ -1,9 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import * as zlib from 'zlib';
 
-// 👇 Path to your big GeoJSON file
 const inputFile = './z_18mr25.json';
-// 👇 Directory to store split files
 const outputDir = path.resolve(__dirname, 'z_18mr25');
 
 if (!fs.existsSync(outputDir)) {
@@ -23,7 +22,7 @@ geojson.features.forEach((feature: any, i: number) => {
     if (!grouped[state]) grouped[state] = [];
     grouped[state].push(feature);
   } else {
-    console.warn(`⚠️ Feature ${i} is missing STATE:`, feature.properties);
+    console.warn(`⚠️ Feature ${i} is missing STATE`);
   }
 });
 
@@ -32,9 +31,19 @@ for (const state in grouped) {
     type: 'FeatureCollection',
     features: grouped[state],
   };
+
+  const jsonData = JSON.stringify(featureCollection); // minified
   const outputPath = path.join(outputDir, `${state}.geojson`);
-  fs.writeFileSync(outputPath, JSON.stringify(featureCollection));
-  console.log(`✅ Wrote ${grouped[state].length} features to ${state}.geojson`);
+  const gzipPath = `${outputPath}.gz`;
+
+  // Write .geojson
+  fs.writeFileSync(outputPath, jsonData);
+
+  // Write .geojson.gz
+  const gzipped = zlib.gzipSync(jsonData);
+  fs.writeFileSync(gzipPath, gzipped);
+
+  console.log(`✅ Wrote ${grouped[state].length} features to ${state}.geojson and ${state}.geojson.gz`);
 }
 
 console.log(`🎉 Done! Files written to: ${outputDir}`);
