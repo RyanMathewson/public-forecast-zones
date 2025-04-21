@@ -1,0 +1,5 @@
+https://www.weather.gov/gis/publiczones
+
+npm install typescript @types/node --save-dev
+npx tsc split-ugc-geojson.ts
+node split-ugc-geojson.js
